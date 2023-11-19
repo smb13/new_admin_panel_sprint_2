@@ -1,7 +1,7 @@
 """Admin module."""
 from django.contrib import admin
 
-from .models import FilmWork, Genre, GenreFilmWork, Person, PersonFilmWork
+from .models import Filmwork, Genre, FilmworkGenre, Person, FilmworkPerson
 
 
 @admin.register(Genre)
@@ -29,16 +29,16 @@ class PersonAdmin(admin.ModelAdmin):
 class GenreFilmworkInline(admin.TabularInline):
     """Admin class for genre film_work inline form."""
 
-    model = GenreFilmWork
+    model = FilmworkGenre
 
 
 class PersonFilmworkInline(admin.TabularInline):
     """Admin class for person film_work inline form."""
 
-    model = PersonFilmWork
+    model = FilmworkPerson
 
 
-@admin.register(FilmWork)
+@admin.register(Filmwork)
 class FilmworkAdmin(admin.ModelAdmin):
     """Admin class for film_work table."""
 

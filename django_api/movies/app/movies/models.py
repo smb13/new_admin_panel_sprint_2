@@ -107,9 +107,16 @@ class FilmworkGenre(UUIDMixin):
 class FilmworkPerson(UUIDMixin):
     """Model class for person_film_work table."""
 
+    class Role(models.TextChoices):
+        """Model TextChoices class for person_film_work table."""
+
+        ACTOR = 'actor', _('actor')
+        DIRECTOR = 'director', _('director')
+        WRITER = 'writer', _('writer')
+
     film_work = models.ForeignKey('Filmwork', on_delete=models.CASCADE)
     person = models.ForeignKey('Person', on_delete=models.CASCADE)
-    role = models.TextField(_('role'), null=True)
+    role = models.CharField(_('role'), choices=Role.choices)
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:

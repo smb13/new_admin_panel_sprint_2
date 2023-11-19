@@ -62,7 +62,7 @@ class Person(UUIDMixin, TimeStampedMixin):
         return self.full_name
 
 
-class FilmWork(UUIDMixin, TimeStampedMixin):
+class Filmwork(UUIDMixin, TimeStampedMixin):
     """Model class for film_work table."""
 
     class Type(models.TextChoices):
@@ -76,8 +76,8 @@ class FilmWork(UUIDMixin, TimeStampedMixin):
     creation_date = models.DateField(_('creation date'))
     rating = models.FloatField(_('rating'), blank=True, validators=[MinValueValidator(0), MaxValueValidator(100)])
     type = models.CharField(_('type'), choices=Type.choices)
-    genres = models.ManyToManyField(Genre, through='GenreFilmwork')
-    persons = models.ManyToManyField(Person, through='PersonFilmwork')
+    genres = models.ManyToManyField(Genre, through='FilmworkGenre')
+    persons = models.ManyToManyField(Person, through='FilmworkPerson')
 
     class Meta:
         """Meta class."""
@@ -90,7 +90,7 @@ class FilmWork(UUIDMixin, TimeStampedMixin):
         return self.title
 
 
-class GenreFilmWork(UUIDMixin):
+class FilmworkGenre(UUIDMixin):
     """Model class for genre_film_work table."""
 
     film_work = models.ForeignKey('Filmwork', on_delete=models.CASCADE)
@@ -104,12 +104,19 @@ class GenreFilmWork(UUIDMixin):
         unique_together = [['film_work', 'genre']]
 
 
-class PersonFilmWork(UUIDMixin):
+class FilmworkPerson(UUIDMixin):
     """Model class for person_film_work table."""
+
+    class Role(models.TextChoices):
+        """Model TextChoices class for person_film_work table."""
+
+        ACTOR = 'actor', _('actor')
+        DIRECTOR = 'director', _('director')
+        WRITER = 'writer', _('writer')
 
     film_work = models.ForeignKey('Filmwork', on_delete=models.CASCADE)
     person = models.ForeignKey('Person', on_delete=models.CASCADE)
-    role = models.TextField(_('role'), null=True)
+    role = models.CharField(_('role'), choices=Role.choices)
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:

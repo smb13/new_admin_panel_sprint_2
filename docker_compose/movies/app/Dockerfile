@@ -24,7 +24,7 @@ COPY uwsgi/uwsgi.ini uwsgi.ini
 
 # Установите зависимости
 RUN  pip install --upgrade pip \
-     && pip install -r requirements.txt
+     && pip install --no-cache-dir -r requirements.txt
 
 # Скопируйте всё оставшееся. Для ускорения сборки образа эту команду стоит разместить ближе к концу файла.
 COPY . .
